@@ -1,0 +1,114 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Cookie Hub | Oaklands", "Synapse")
+
+--MAIN
+local Main = Window:NewTab("Main")
+local MainSection = Main:NewSection("Main")
+
+
+MainSection:NewButton("X To Teleport", "Makes you teleport where you mouse is pointed when X is pressed", function()
+    plr = game.Players.LocalPlayer
+ 
+hum = plr.Character.HumanoidRootPart
+ 
+mouse = plr:GetMouse()
+ 
+ 
+ 
+mouse.KeyDown:connect(function(key)
+ 
+if key == "x" then
+ 
+if mouse.Target then
+ 
+hum.CFrame = CFrame.new(mouse.Hit.x, mouse.Hit.y + 5, mouse.Hit.z)
+ 
+end
+ 
+end
+end)
+end)
+
+MainSection:NewToggle("No-Clip", "When toggles your player will walk through anything", function(state)
+    if state then
+        print("Toggle On")
+        local Noclip = nil
+local Clip = nil
+
+function noclip()
+	Clip = false
+	local function Nocl()
+		if Clip == false and game.Players.LocalPlayer.Character ~= nil then
+			for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+				if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+					v.CanCollide = false
+				end
+			end
+		end
+		wait(0.21) -- basic optimization
+	end
+	Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+end
+
+function clip()
+	if Noclip then Noclip:Disconnect() end
+	Clip = true
+end
+
+noclip() -- to toggle noclip() and clip()
+    else
+        print("Toggle Off")
+        local Noclip = Off
+local Clip = Off
+
+function noclip()
+	Clip = false
+	local function Nocl()
+		if Clip == false and game.Players.LocalPlayer.Character ~= nil then
+			for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+				if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+					v.CanCollide = true
+				end
+			end
+		end
+		wait(0.21) -- basic optimization
+	end
+	Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+end
+
+function clip()
+	if Noclip then Noclip:Disconnect() end
+	Clip = false
+end
+
+noclip() -- to toggle noclip() and clip()
+    end
+end)
+
+
+MainSection:NewToggle("Infinite Jump", "When toggled you can jump very high", function(state)
+    if state then
+        print("Toggle On")
+        local Player = game:GetService'Players'.LocalPlayer;
+local UIS = game:GetService'UserInputService';
+
+_G.JumpHeight = 50;
+
+function Action(Object, Function) if Object ~= nil then Function(Object); end end
+
+UIS.InputBegan:connect(function(UserInput)
+    if UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space then
+        Action(Player.Character.Humanoid, function(self)
+            if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
+                Action(self.Parent.HumanoidRootPart, function(self)
+                    self.Velocity = Vector3.new(0, _G.JumpHeight, 0);
+                end)
+            end
+        end)
+    end
+end)
+    else
+        print("Toggle Off")
+        game.Players.LocalPlayer.Character.Humanoid.JumpHeight = 50
+    end
+end)
